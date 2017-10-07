@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+  </head>
+  <body>
+    <div id="app">
+      <form id="form">
+        <input id="input" required/>
+        <button id="btn">Search</button>
+      </form>
+      <table id="table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>名稱</th>
+            <th>價格</th>
+            <th>圖片</th>
+            <th>來源</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+        </tbody>
+      </table>
+    </div>
+    <script>
+      let inputElem = document.querySelector('#input');
+      let tbdElem = document.querySelector('#tbody');
+      let formElem = document.querySelector('#form');
+
+      formElem.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let _key = inputElem.value;
+        fetch(`http://localhost:3030/item/list?key=${_key}`)
+          .then(res => res.json())
+          .then((res) => {
+            console.log(res);
+            let _html = '';
+            res.items.forEach((item, i) => {
+              _html += `<tr>
+                <td>${i + 1}</td>
+                <td><a target="_blank" href="${item.url}">${item.title}</a></td>
+                <td>${item.price}</td>
+                <td><img src="${item.img}"/></td>
+                <td>${item.vendor}</td>
+              </tr>`
+            });
+            tbdElem.innerHTML = _html;
+          });
+      });
+    </script>
+  </body>
+</html>
