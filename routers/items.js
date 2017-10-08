@@ -115,8 +115,7 @@ function yahooHandler(key) {
     .catch(() => ([]));
 }
 
-function momoHandler(key) {
-  let sitepage = null;
+function momoHandler(key) {;
   let phInstance = null;
   let _page = null;
   return phantom.create()
