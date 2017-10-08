@@ -2,6 +2,41 @@
 <html>
   <head>
     <style>
+      #mask.active {
+        display: flex;
+      }
+
+      #mask {
+        position: absolute;
+        height: 100vh;
+        width: 100vw;
+        background: rgba(0, 0, 0, .5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+      }
+
+      #spinner {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border-top: 5px solid #FFF;
+        border-left: 5px solid #AAA;
+        border-right: 5px solid #AAA;
+        border-bottom: 5px solid #AAA;
+        animation: rotate .8s 0s infinite linear;
+      }
+
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(359deg);
+        }
+      }
+
       .item-img {
         max-width: 100px;
         max-height: 100px;
@@ -9,49 +44,63 @@
     </style>
   </head>
   <body>
+    <div id="mask">
+      <div id="spinner"></div>
+    </div>
     <div id="app">
-      <form id="form">
-        <input id="input" required/>
-        <button id="btn">Search</button>
-      </form>
-      <table id="table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>名稱</th>
-            <th>價格</th>
-            <th>圖片</th>
-            <th>來源</th>
-          </tr>
-        </thead>
-        <tbody id="tbody">
-        </tbody>
-      </table>
+      <div id="content">
+        <form id="form">
+          <input id="input" required/>
+          <button id="btn">Search</button>
+        </form>
+        <table id="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>名稱</th>
+              <th>價格</th>
+              <th>圖片</th>
+              <th>來源</th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+          </tbody>
+        </table>
+      </div>
     </div>
     <script>
       let inputElem = document.querySelector('#input');
       let tbdElem = document.querySelector('#tbody');
       let formElem = document.querySelector('#form');
+      let maskElem = document.querySelector('#mask');
+      inputElem.focus();
 
       formElem.addEventListener('submit', (e) => {
         e.preventDefault();
+        inputElem.blur();
+        maskElem.classList.add('active');
         let _key = inputElem.value;
         fetch(`http://localhost:3030/item/list?key=${_key}`)
           .then(res => res.json())
-          .then((res) => {
-            console.log(res);
+          .then(res => {
+            maskElem.classList.remove('active');
             let _html = '';
-            res.items.forEach((item, i) => {
-              _html += `<tr>
-                <td>${i + 1}</td>
-                <td><a target="_blank" href="${item.url}">${item.title}</a></td>
-                <td>${item.price}</td>
-                <td><img class="item-img" src="${item.img}"/></td>
-                <td>${item.vendor}</td>
-              </tr>`
-            });
+            if (!res.items.length) {
+              _html = `<tr><td colspan="5">沒有結果</td></tr>`;
+            } else {
+              res.items.forEach((item, i) => {
+                _html += `<tr>
+                  <td>${i + 1}</td>
+                  <td><a target="_blank" href="${item.url}">${item.title}</a></td>
+                  <td>${item.price}</td>
+                  <td><img class="item-img" src="${item.img}"/></td>
+                  <td>${item.vendor}</td>
+                </tr>`
+              });
+            }
             tbdElem.innerHTML = _html;
-          });
+          })
+          .catch(() => { maskElem.classList.remove('active'); });
       });
     </script>
   </body>

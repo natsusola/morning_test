@@ -136,11 +136,10 @@ function momoHandler(key) {
 
       let items = [];
       results.each((i, elem) => {
-        console.log(elem);
         let aElem = $(elem).children('.goodsUrl');
 
         let title = aElem.children('.prdName').text();
-        let url = aElem.attr('href');
+        let url = 'https://www.momoshop.com.tw' + aElem.attr('href');
         let img = aElem.children('img').attr('src');
         let price = parseInt(aElem.children('.money').children('.price').children('b').text());
 
