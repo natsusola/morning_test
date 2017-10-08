@@ -3,8 +3,7 @@ const router = express.Router();
 const _ = require('lodash');
 const cheerio = require('cheerio');
 const request = require('request-promise');
-
-
+const phantom = require('phantom');
 
 const VENDORS = {
   books: {
@@ -24,6 +23,41 @@ const VENDORS = {
   //   queryUrl: _.template(`https://www.momoshop.com.tw/search/searchShop.jsp?keyword=<%= key %>&searchType=1&curPage=1`)
   // }
 };
+
+var sitepage = null;
+var phInstance = null;
+var _page = null;
+phantom.create()
+    .then(instance => {
+        phInstance = instance;
+        return instance.createPage();
+    })
+    .then(page => {
+      _page = page;
+      return page.open('https://www.momoshop.com.tw/search/searchShop.jsp?keyword=%E7%B1%B3%E6%A3%AE%20%E9%BA%A5%E7%89%87&searchType=1&curPage=1');
+	// use page
+    })
+    .then(() => {
+      _page.property('content');
+    })
+    .then(content => {
+      // let $ = ;
+      console.log(content);
+    })
+    .catch(error => {
+        console.log(error);
+        phInstance.exit();
+    });
+
+// phantom.create(ph => {
+//   return ph.createPage(page => {
+//     return page.open('https://www.momoshop.com.tw/search/searchShop.jsp?keyword=%E7%B1%B3%E6%A3%AE%20%E9%BA%A5%E7%89%87&searchType=1&curPage=1', (status) => {
+//       page.injectJs('https://code.jquery.com/jquery-3.2.1.min.js', () => {
+//         console.log($('.listArea'));
+//       })
+//     });
+//   });
+// });
 
 router.use((req, res, next) => { next(); });
 
