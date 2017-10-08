@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #container {
+      overflow: auto;
+    }
+
+    ul {
+      overflow: auto;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    li {
+      float: left;
+      padding: 0;
+      margin: 0;
+    }
+
+    li div {
+      position: relative;
+      height: 0;
+      padding-top: 100%;
+      display: block;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+
+    @media screen and (min-width: 1080px) {
+      li {
+        width: 25%;
+      }
+    }
+
+    @media screen and (min-width: 768px) and (max-width: 1079px) {
+      li {
+        width: 33.3%;
+      }
+    }
+
+    @media screen and (min-width: 346px) and (max-width: 767px) {
+      li {
+        width: 50%;
+      }
+    }
+
+    @media screen and (max-width: 345px) {
+      li {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <ul id="list"></ul>
+  </div>
+</button>
+<script type="text/javascript">
+  const items = [
+    { title: 'Cat 1', image: 'http://placekitten.com/311/313' },
+    { title: 'Cat 2', image: 'http://placekitten.com/302/302' },
+    { title: 'Cat 3', image: 'http://placekitten.com/303/303' },
+    { title: 'Cat 4', image: 'http://placekitten.com/304/304' },
+    { title: 'Cat 5', image: 'http://placekitten.com/305/305' },
+    { title: 'Cat 6', image: 'http://placekitten.com/306/306' },
+    { title: 'Cat 7', image: 'http://placekitten.com/307/307' },
+    { title: 'Cat 8', image: 'http://placekitten.com/308/308' },
+    { title: 'Cat 9', image: 'http://placekitten.com/310/310' }
+  ];
+
+  const loadImg = 'http://24.media.tumblr.com/bec5933eea5043acf6a37bb1394384ab/tumblr_mied4omnAR1s5prmbo1_400.gif';
+  const failImg = 'https://oncheckin.com/assets/blogassets/blog-d888cc31-b202-4676-bdbe-e01432534be7.png';
+  let ulElem = document.querySelector('#list');
+
+  items.forEach((item) => {
+    ((item) => {
+      let liElem = document.createElement('li');
+      let imgBoxElem = document.createElement('div');
+      let imgElem = document.createElement('img');
+      imgElem.src = loadImg;
+      fetch(item.image)
+        .then((res) => res.blob())
+        .then((res) => { imgElem.src = URL.createObjectURL(res); })
+        .catch(() => { imgElem.src = failImg; });
+      imgBoxElem.appendChild(imgElem);
+      liElem.appendChild(imgBoxElem);
+      ulElem.appendChild(liElem);
+    })(item);
+  });
+
+</script>
+</body>
+</html>

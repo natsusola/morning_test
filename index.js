@@ -13,8 +13,8 @@ app.use((req, res, next) => {
 });
 
 app.use('/item', items);
+app.use('/rwd', express.static(__dirname + '/rwd'));
 app.use('/', express.static(__dirname + '/public'));
-
 
 app.listen(port, () => {
   console.log(`Server is starting at port: ${port}!`);
