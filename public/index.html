@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-
+    <style>
+      .item-img {
+        max-width: 100px;
+        max-height: 100px;
+      }
+    </style>
   </head>
   <body>
     <div id="app">
@@ -41,7 +46,7 @@
                 <td>${i + 1}</td>
                 <td><a target="_blank" href="${item.url}">${item.title}</a></td>
                 <td>${item.price}</td>
-                <td><img src="${item.img}"/></td>
+                <td><img class="item-img" src="${item.img}"/></td>
                 <td>${item.vendor}</td>
               </tr>`
             });
