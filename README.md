@@ -9,3 +9,4 @@
 1. Start server, run command `node index.js`
 
 1. Use browser link to `localhost:3030`
+  - Web[c] link to `localhost:3030/rwd.html`
